@@ -1,0 +1,22 @@
+{
+    "$scheme": "https://raw.githubusercontent.com/dhbwstudienarbeit2019/frontend/parameter-scheme/frontend/src/schema/parameters.schema.json",
+    "item": [{
+        "name": "maximumNumberOfIterations",
+        "title": "Maximum Nr. of Iterations",
+        "description": "maximum number of iterations for optimization",
+        "parameter": {
+          "value": 500
+        }
+      },
+      {
+        "name": "numberOfWolves",
+        "title": "Number of Wolves",
+        "description": "how many wolves should be in the swarm",
+        "parameter": {
+          "minimum": 1,
+          "maximum": 1000,
+          "value": 20
+        }
+      }
+    ]
+  }
