@@ -53,7 +53,7 @@ function runCode(): Point[] {
 
         a = 2.0 - iterationCounter*(2.0/config.maximumNumberOfIterations);
 
-        huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, a);
+        huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, a, searchDomain);
 
         wolves.forEach(wolf => { huntingPrey.hunt(wolf); });
 
@@ -67,7 +67,7 @@ function runCode(): Point[] {
 
         iterationCounter++;
     }
-    
+
     return results;
 }
 
