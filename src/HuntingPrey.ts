@@ -5,8 +5,8 @@ import { Wolf } from "./wolf";
 import * as MersenneTwister from 'mersenne-twister';
 
 export class HuntingPrey implements IHuntingPrey {
-    private r1 = [];
-    private r2 = [];
+    private r1: Position;
+    private r2: Position;
     private static readonly mersenneTwister = new MersenneTwister();
 
     constructor(private readonly wolfAlpha: Wolf, 
@@ -17,61 +17,62 @@ export class HuntingPrey implements IHuntingPrey {
     }
 
     private setRandomVectors(): void {
-        for(let i = 0; i < 2; i++) {
-            this.r1[i] = HuntingPrey.mersenneTwister.random();
-            this.r2[i] = HuntingPrey.mersenneTwister.random();
-        }
+        this.r1 = Position.doRandomPosition();
+        this.r2 = Position.doRandomPosition();
     }
 
-    private calculateA(): number[] {
-        let A = Number[2];
-        A[0] = 2.0 * this.a * this.r1[0] - this.a;
-        A[1] = 2.0 * this.a * this.r1[1] - this.a;
-        return A;
+    private calculateA(): Position {
+        return new Position(2.0 * this.a * this.r1.x - this.a, 2.0 * this.a * this.r1.y - this.a);
     }
 
-    private calculateC(): number[] {
-        let C = Number[2];
-        C[0] = 2.0 * this.r2[0];
-        C[1] = 2.0 * this.r2[1];
-        return C;
+    private calculateC(): Position {
+        return new Position(2.0 * this.r2.x, 2.0 * this.r2.y);
     }
 
-    private calculateD(C: number[], wolfChef: Wolf, wolf: Wolf): number[] {
-        let D = Number[2];
-        D[0] = Math.abs(C[0] * wolfChef.Position[0] - wolf.Position[0]);
-        D[1] = Math.abs(C[1] * wolfChef.Position[1] - wolf.Position[1]);
-        return D;
+    private calculateD(C: Position, wolfChef: Wolf, wolf: Wolf): Position {
+        return new Position(Math.abs(C.x * wolfChef.Position.x - wolf.Position.x), 
+                            Math.abs(C.y * wolfChef.Position.y - wolf.Position.y));
     }
 
-    private calculateX(wolfChef: Wolf, A: number[], D: number[]): number[] {
-        let X = Number[2];
-        X[0] = wolfChef.Position[0] - A[0] * D[0];
-        X[1] = wolfChef.Position[1] - A[1] * D[1];
-        return X;
+    private calculateX(wolfChef: Wolf, A: Position, D: Position): Position {
+        return new Position(wolfChef.Position.x - A.x * D.x, wolfChef.Position.y - A.y * D.y);
     }
+
+    private static limitRange(value: number, min: number, max: number) {
+        return Math.max(min, Math.min(max, value));
+}
+
+    private checkPosition(pos: Position): Position {
+        const newPosition = pos;
+        const limitx = (x) => HuntingPrey.limitRange(x, this.searchDomain.min.x, this.searchDomain.max.x);
+        const limity = (y) => HuntingPrey.limitRange(y, this.searchDomain.min.y, this.searchDomain.max.y);
+        return new Position(
+            limitx(newPosition.x),
+            limity(newPosition.y)
+        );
+}
 
     hunt(wolf: Wolf): void {
         this.setRandomVectors();
         let A = this.calculateA();
         let C = this.calculateC();
         let X1 = this.calculateX(this.wolfAlpha, this.calculateA(), this.calculateD(C, this.wolfAlpha, wolf));
-        
+        X1 = this.checkPosition(X1);
+
         this.setRandomVectors();
         A = this.calculateA();
         C = this.calculateC();
         let X2 = this.calculateX(this.wolfBeta, this.calculateA(), this.calculateD(C, this.wolfBeta, wolf));
-        
+        X2 = this.checkPosition(X2);
+
         this.setRandomVectors();
         A = this.calculateA();
         C = this.calculateC();
         let X3 = this.calculateX(this.wolfDelta, this.calculateA(), this.calculateD(C, this.wolfDelta, wolf));
-
-        //Boundaries prüfen - searchDomain
+        X3 = this.checkPosition(X3);
 
         let newPosition = new Position((X1[0] + X2[0] + X3[0])/3.0,(X1[1] + X2[1] + X3[1])/3.0);
-
-        //check Boundaries
+        newPosition = this.checkPosition(newPosition);
 
         wolf.Position = newPosition;
     }
