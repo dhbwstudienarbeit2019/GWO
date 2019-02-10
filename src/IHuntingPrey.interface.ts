@@ -1,5 +1,5 @@
 import {Wolf} from './wolf';
 
 export interface IHuntingPrey {
-    hunt: () => void;
+    hunt: (wolf: Wolf) => void;
 }
