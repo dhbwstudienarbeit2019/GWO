@@ -41,6 +41,9 @@ function runCode(): Point[] {
     let wolfDelta: Wolf;
     let a: number;
     let results: Position[] = [];
+    let bestPosition: Position;
+    let lastResult: Position;
+    const minimumEpsilon = 1e-5;
 
     for (let i = 0; i < config.numberOfWolves; i++) {
         wolves[i] = new Wolf(
@@ -52,6 +55,7 @@ function runCode(): Point[] {
             functionToOptimize);
     }
     wolves = rateWolves(wolves);
+    bestPosition = wolves[0].Position;
 
     wolfAlpha = wolves[0];
     wolfBeta = wolves[1];
@@ -63,11 +67,26 @@ function runCode(): Point[] {
 
         a = 2.0 - iterationCounter*(2.0/config.maximumNumberOfIterations);
 
+        if (bestPosition !== undefined &&
+            (lastResult === undefined ||
+                !lastResult.compareToPoint(bestPosition, minimumEpsilon))) {
+            lastResult = bestPosition;
+            results.push(lastResult);
+        }
+        else {
+            console.log([
+                lastResult, bestPosition,
+                lastResult && bestPosition && lastResult.subtract(bestPosition.x, bestPosition.y),
+                lastResult && bestPosition && !lastResult.compareToPoint(bestPosition, minimumEpsilon)]
+            );
+        }
+
         huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, a, searchDomain);
 
         wolves.forEach(wolf => { huntingPrey.hunt(wolf); });
 
         wolves = rateWolves(wolves);
+        bestPosition = wolves[0].Position;
 
         wolfAlpha = wolves[0];
         wolfBeta = wolves[1];
