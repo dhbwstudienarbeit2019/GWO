@@ -3,13 +3,7 @@ const config = {
         action: 'start',
         config: {
             maximumNumberOfIterations: 300,
-            numberOfCats: 10,
-            mixtureRatio: 0.5,
-            constantNumber: 2,
-            selfPositionConsidering: true,
-            countsOfDimensionsToChange: 2,
-            seekingRangeOfSelectedDimension: 15,
-            seekingMemoryPool: 30
+            numberOfWolves: 10
         },
         func: '(x,y)=>x*x+y*y',
         searchArea: {
