@@ -16,8 +16,18 @@ function rateWolves(wolves: Wolf[]): Wolf[] {
         fitnessValues[index][0] = wolves[index].calculateFitness();
     }
 
-    //todo alle sortieren und ALLE zurückgeben!
-
+    let rated = Number.POSITIVE_INFINITY;
+    let chosenWolf: number;
+    for(let indexNew = 0; indexNew < config.numberOfWolves; indexNew++) {
+        for(let rate = 0; rate < config.numberOfWolves; rate++) {
+            if (fitnessValues[rate][0] < rated) {
+                rated = fitnessValues[rate][0];
+                chosenWolf = rate;
+            }
+        }
+        fitnessValues[chosenWolf][0] = Number.POSITIVE_INFINITY;
+        ratedWolves[indexNew] = chosenWolf;
+    }
     return ratedWolves;
 }
 
@@ -70,8 +80,6 @@ function runCode(): Point[] {
 
     return results;
 }
-
-
 
 addEventListener('message', (message: { data: any }) => {
     try {
