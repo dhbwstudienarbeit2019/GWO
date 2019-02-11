@@ -3,6 +3,7 @@ import { Point, ResultMessage, StartMessage } from "./message.interface";
 import { Position } from "./Point";
 import { Wolf } from "./wolf";
 import { HuntingPrey } from "./HuntingPrey";
+import { IHuntingPrey } from "./IHuntingPrey.interface";
 
 export declare function addEventListener(event: string, handler: (any) => void): void;
 export declare function postMessage(data: any);
@@ -10,15 +11,16 @@ export declare function postMessage(data: any);
 function rateWolves(wolves: Wolf[]): Wolf[] {
     let fitnessValues = [];
     let ratedWolves = [];
+    let indices = [];
     
     for(let index = 0; index < config.numberOfWolves; index++) {
         fitnessValues[index] = [];
         fitnessValues[index][0] = wolves[index].calculateFitness();
     }
 
-    let rated = Number.POSITIVE_INFINITY;
     let chosenWolf: number;
     for(let indexNew = 0; indexNew < config.numberOfWolves; indexNew++) {
+        let rated = Number.POSITIVE_INFINITY;
         for(let rate = 0; rate < config.numberOfWolves; rate++) {
             if (fitnessValues[rate][0] < rated) {
                 rated = fitnessValues[rate][0];
@@ -26,15 +28,26 @@ function rateWolves(wolves: Wolf[]): Wolf[] {
             }
         }
         fitnessValues[chosenWolf][0] = Number.POSITIVE_INFINITY;
-        ratedWolves[indexNew] = chosenWolf;
+        indices[indexNew] = chosenWolf;
     }
+
+    let searchedIndex: number;
+    for(let index = 0; index < config.numberOfWolves; index++) {
+        for(let search = 0; search < config.numberOfWolves; search++) {
+            if (indices[search] == index) {
+                searchedIndex = search;
+                break;
+            }
+        }
+        ratedWolves[index] = wolves[searchedIndex];
+    }
+
     return ratedWolves;
 }
 
 function runCode(): Point[] {
     console.log('runcode');
 
-    let huntingPrey;
     let wolves: Wolf[] = [];
     let wolfAlpha: Wolf;
     let wolfBeta: Wolf;
@@ -54,6 +67,7 @@ function runCode(): Point[] {
                 searchDomain.max.y),
             functionToOptimize);
     }
+
     wolves = rateWolves(wolves);
     bestPosition = wolves[0].Position;
 
@@ -64,7 +78,7 @@ function runCode(): Point[] {
     let iterationCounter = 0;
 
     while (iterationCounter < config.maximumNumberOfIterations) {
-
+        
         a = 2.0 - iterationCounter*(2.0/config.maximumNumberOfIterations);
 
         if (bestPosition !== undefined &&
@@ -81,8 +95,8 @@ function runCode(): Point[] {
             );
         }
 
-        huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, a, searchDomain);
-
+        let huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, a, searchDomain);
+        
         wolves.forEach(wolf => { huntingPrey.hunt(wolf); });
 
         wolves = rateWolves(wolves);
@@ -91,8 +105,6 @@ function runCode(): Point[] {
         wolfAlpha = wolves[0];
         wolfBeta = wolves[1];
         wolfDelta = wolves[2];
-
-        if(iterationCounter % 20 == 0) results.push(wolves[0].Position);
 
         iterationCounter++;
     }

@@ -2,12 +2,10 @@ import { IHuntingPrey } from "./IHuntingPrey.interface";
 import { Point } from "./message.interface";
 import { Position } from "./Point";
 import { Wolf } from "./wolf";
-import * as MersenneTwister from 'mersenne-twister';
 
 export class HuntingPrey implements IHuntingPrey {
     private r1: Position;
     private r2: Position;
-    private static readonly mersenneTwister = new MersenneTwister();
 
     constructor(private readonly wolfAlpha: Wolf, 
                 private readonly wolfBeta: Wolf, 
@@ -54,24 +52,21 @@ export class HuntingPrey implements IHuntingPrey {
 
     hunt(wolf: Wolf): void {
         this.setRandomVectors();
-        let A = this.calculateA();
         let C = this.calculateC();
         let X1 = this.calculateX(this.wolfAlpha, this.calculateA(), this.calculateD(C, this.wolfAlpha, wolf));
         X1 = this.checkPosition(X1);
 
         this.setRandomVectors();
-        A = this.calculateA();
         C = this.calculateC();
         let X2 = this.calculateX(this.wolfBeta, this.calculateA(), this.calculateD(C, this.wolfBeta, wolf));
         X2 = this.checkPosition(X2);
 
         this.setRandomVectors();
-        A = this.calculateA();
         C = this.calculateC();
         let X3 = this.calculateX(this.wolfDelta, this.calculateA(), this.calculateD(C, this.wolfDelta, wolf));
         X3 = this.checkPosition(X3);
 
-        let newPosition = new Position((X1[0] + X2[0] + X3[0])/3.0,(X1[1] + X2[1] + X3[1])/3.0);
+        let newPosition = new Position((X1.x + X2.x + X3.x)/3.0,(X1.y + X2.y + X3.y)/3.0);
         newPosition = this.checkPosition(newPosition);
 
         wolf.Position = newPosition;
