@@ -44,16 +44,6 @@ module.exports = {
                 from: './README.md',
                 to: './README.md',
                 toType: 'file'
-            },
-            {
-                from: './EquationPi.gif',
-                to: './EquationPi.gif',
-                toType: 'file'
-            },
-            {
-                from: './cso-pap.jpg',
-                to: './cso-pap.jpg',
-                toType: 'file'
             }
         ])
     ]
