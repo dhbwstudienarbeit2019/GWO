@@ -3,7 +3,6 @@ import { Point, ResultMessage, StartMessage } from "./message.interface";
 import { Position } from "./Point";
 import { Wolf } from "./wolf";
 import { HuntingPrey } from "./HuntingPrey";
-import { IHuntingPrey } from "./IHuntingPrey.interface";
 
 export declare function addEventListener(event: string, handler: (any) => void): void;
 export declare function postMessage(data: any);
