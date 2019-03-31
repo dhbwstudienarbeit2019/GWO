@@ -16,8 +16,8 @@ export class Wolf {
         return this.position;
     }
 
-    public set Position(posiiton: Position) {
-        this.position = posiiton;
+    public set Position(position: Position) {
+        this.position = position;
     }
 
     calculateFitness(): number {

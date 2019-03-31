@@ -10,7 +10,7 @@ export class HuntingPrey implements IHuntingPrey {
     constructor(private readonly wolfAlpha: Wolf, 
                 private readonly wolfBeta: Wolf, 
                 private readonly wolfDelta: Wolf, 
-                private readonly a: number, 
+                private readonly seekOrHuntCoefficient: number, 
                 private readonly searchDomain: { min: Point, max: Point }) { 
     }
 
@@ -20,7 +20,8 @@ export class HuntingPrey implements IHuntingPrey {
     }
 
     private calculateA(): Position {
-        return new Position(2.0 * this.a * this.r1.x - this.a, 2.0 * this.a * this.r1.y - this.a);
+        return new Position(2.0 * this.seekOrHuntCoefficient * this.r1.x - this.seekOrHuntCoefficient, 
+                            2.0 * this.seekOrHuntCoefficient * this.r1.y - this.seekOrHuntCoefficient);
     }
 
     private calculateC(): Position {
