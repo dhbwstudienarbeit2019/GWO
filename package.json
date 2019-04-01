@@ -1,0 +1,44 @@
+{
+  "name": "gwo",
+  "version": "1.0.0",
+  "description": "Grey Wolf Optimization",
+  "main": "index.js",
+  "dependencies": {
+    "mersenne-twister": "^1.1.0",
+    "nodemon": "^1.18.7",
+    "webpack": "^4.29.0"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^1.0.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "json-schema-loader": "^1.0.0",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.1.4",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "scripts": {
+    "compile": "(npx tsc && echo 'Build successfull' || echo 'Build failed' ) && node node.js",
+    "continous-build:bash": "./node_modules/nodemon/bin/nodemon.js -e npx webpack && node node.js",
+    "continous-build:windows": "node_modules\\nodemon\\bin\\nodemon.js -e ts  --exec \"npm run compile:windows\"",
+    "serve": "webpack-dev-server",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhbwstudienarbeit2019/GWO.git"
+  },
+  "keywords": [
+    "gwo",
+    "grey",
+    "wolf",
+    "optimization"
+  ],
+  "author": "Laura Kaipl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhbwstudienarbeit2019/GWO/issues"
+  },
+  "homepage": "https://github.com/dhbwstudienarbeit2019/GWO#readme"
+}
