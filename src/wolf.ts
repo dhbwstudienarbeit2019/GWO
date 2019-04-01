@@ -2,7 +2,7 @@ import { Position } from "./Point";
 
 export class Wolf {
     private position: Position;
-    private functionToOptimize: (x: number, y: number) => number;
+    private readonly functionToOptimize: (x: number, y: number) => number;
 
     constructor(position: Position, functionToOptimize: (x: number, y: number) => number) {
         this.position = position;

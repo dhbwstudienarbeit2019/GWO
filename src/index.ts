@@ -8,9 +8,9 @@ export declare function addEventListener(event: string, handler: (any) => void):
 export declare function postMessage(data: any);
 
 function rateWolves(wolves: Wolf[]): Wolf[] {
-    let fitnessValues = [];
-    let ratedWolves = [];
-    let indices = [];
+    const fitnessValues = [];
+    const ratedWolves = [];
+    const indices = [];
     
     for(let index = 0; index < config.numberOfWolves; index++) {
         fitnessValues[index] = [];
@@ -96,7 +96,7 @@ function runCode(): Point[] {
 
         const huntingPrey = new HuntingPrey(wolfAlpha, wolfBeta, wolfDelta, seekOrHuntCoefficient, searchDomain);
         
-        wolves.forEach(wolf => { huntingPrey.hunt(wolf); });
+        wolves.forEach(wolf => huntingPrey.hunt(wolf));
 
         wolves = rateWolves(wolves);
         bestPosition = wolves[0].Position;
@@ -113,7 +113,7 @@ function runCode(): Point[] {
 
 addEventListener('message', (message: { data: any }) => {
     try {
-        let data = <StartMessage>message.data;
+        const data = <StartMessage>message.data;
         config = data.config;
         functionToOptimize = new Function('return ' + data.func.toString())();
         searchDomain = data.searchArea;
