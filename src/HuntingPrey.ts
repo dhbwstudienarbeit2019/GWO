@@ -54,18 +54,15 @@ export class HuntingPrey implements IHuntingPrey {
     hunt(wolf: Wolf): void {
         this.setRandomVectors();
         let C = this.calculateC();
-        let X1 = this.calculateX(this.wolfAlpha, this.calculateA(), this.calculateD(C, this.wolfAlpha, wolf));
-        X1 = this.checkPosition(X1);
+        const X1 = this.calculateX(this.wolfAlpha, this.calculateA(), this.calculateD(C, this.wolfAlpha, wolf));
 
         this.setRandomVectors();
         C = this.calculateC();
-        let X2 = this.calculateX(this.wolfBeta, this.calculateA(), this.calculateD(C, this.wolfBeta, wolf));
-        X2 = this.checkPosition(X2);
+        const X2 = this.calculateX(this.wolfBeta, this.calculateA(), this.calculateD(C, this.wolfBeta, wolf));
 
         this.setRandomVectors();
         C = this.calculateC();
-        let X3 = this.calculateX(this.wolfDelta, this.calculateA(), this.calculateD(C, this.wolfDelta, wolf));
-        X3 = this.checkPosition(X3);
+        const X3 = this.calculateX(this.wolfDelta, this.calculateA(), this.calculateD(C, this.wolfDelta, wolf));
 
         let newPosition = new Position((X1.x + X2.x + X3.x)/3.0,(X1.y + X2.y + X3.y)/3.0);
         newPosition = this.checkPosition(newPosition);
